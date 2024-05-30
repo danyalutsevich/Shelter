@@ -4,13 +4,28 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { env } from "@/utils/enum/env.enum";
 
 export default function SignUp() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const signin = () => {};
+  const signup = async () => {
+    const res = await fetch(env.url + "/Account/RegisterUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      }),
+    });
+
+    console.log(await res.json());
+  };
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-b to-green-300 from-amber-200 h-[100vh]">
@@ -21,7 +36,7 @@ export default function SignUp() {
           <Input
             type="text"
             placeholder="Name"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
@@ -40,8 +55,8 @@ export default function SignUp() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button className="w-full" onClick={signin}>
-          Sign In
+        <Button className="w-full" onClick={signup}>
+          Sign Up
         </Button>
       </Card>
     </div>
