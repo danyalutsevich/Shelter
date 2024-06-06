@@ -9,6 +9,7 @@ import { env } from "@/utils/enum/env.enum";
 import validator from "validator";
 import { Role } from "@/utils/enum/Role.enum";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [name, setName] = useState<string>("");
@@ -16,6 +17,7 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [role, setRole] = useState<string>(Role.Client);
+  const router = useRouter();
 
   const signup = async () => {
     const res = await fetch(env.url + "/Account/RegisterUser", {
@@ -27,8 +29,13 @@ export default function SignUp() {
         name: name,
         email: email,
         password: password,
+        role: role,
       }),
     });
+
+    if (res.ok) {
+      router.push("/signin");
+    }
 
     console.log(await res.json());
   };
