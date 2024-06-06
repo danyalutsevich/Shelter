@@ -5,10 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { env } from "@/utils/enum/env.enum";
-
-//https://shelterbackapi.azurewebsites.net/Account/AuthenticateUser?userEmail=luchevich31%40gmail.com&userPassword=Qwerty123%23
+import validator from "validator";
+import Link from "next/link";
+import Image from "next/image";
+import { redirect,useRouter } from "next/navigation";
 
 export default function SignIn() {
+
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -28,18 +32,35 @@ export default function SignIn() {
       }
     );
 
-    if (!res.ok) {
+    if (res.ok) {
       const data = await res.json();
       console.log(data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      router.push("/");
     }
   };
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-b from-green-300 to-amber-200 h-[100vh]">
-      <Card className="p-2 space-y-6 w-96 h-80 justify-between flex flex-col">
-        <h1 className="text-center font-sans font-black text-lg">Sign In</h1>
+    <div className="flex flex-col items-center h-[90vh] bg-[#F4F1FF] justify-center pb-24">
+      <div className="flex flex-col items-center justify-center m-8 p-3">
+        <Link href="/">
+          <Image
+            src={"/Logo.svg"}
+            alt="logo"
+            width={100}
+            height={100}
+            className="m-5"
+          />
+        </Link>
+        <h1 className="font-sans font-bold text-3xl">Ласкаво просимо</h1>
+        <p className="font-sans max-w-96 text-center">
+          За кілька хвилин ми допоможемо вам створити вражаюче резюме та зробити
+          перший крок до вакансії вашої мрії.
+        </p>
+      </div>
+
+      <Card className="p-4 space-y-6 w-full max-w-[40%] justify-between flex flex-col">
         <div>
           <Label>Email</Label>
           <Input
@@ -47,17 +68,21 @@ export default function SignIn() {
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
+          {validator.isEmail(email) || email == "" ? null : (
+            <p className="text-red-500">Невірний формат електронної пошти</p>
+          )}
         </div>
         <div>
-          <Label>Password</Label>
+          <Label>Пароль</Label>
           <Input
-            type="text"
-            placeholder="Password"
+            type="password"
+            placeholder="Пароль"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button className="w-full" onClick={signin}>
-          Sign In
+
+        <Button className="w-full" onClick={signin} variant={"outline"}>
+          Увійти
         </Button>
       </Card>
     </div>

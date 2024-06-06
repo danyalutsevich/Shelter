@@ -14,7 +14,7 @@ export function LanguageSettings() {
   return (
     <div className="flex flex-row space-x-2">
       <Select>
-        <SelectTrigger className="w-48 border-0 text-white">
+        <SelectTrigger className="border-0 text-white">
           <SelectValue placeholder="Оберить ваше місце" />
         </SelectTrigger>
         <SelectContent>
@@ -25,7 +25,7 @@ export function LanguageSettings() {
         </SelectContent>
       </Select>
       <Select>
-        <SelectTrigger className=" border-0 text-white">
+        <SelectTrigger className="border-0 text-white">
           <SelectValue placeholder="Оберить мову" />
         </SelectTrigger>
         <SelectContent>
