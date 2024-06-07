@@ -117,8 +117,7 @@ public class AdvtController : ControllerBase
         return Ok("Advt successfully edited");
     }
 
-
-       [HttpPost]
+    [HttpPost]
     [Route("UploadImage/{id}")]
     public async Task<IActionResult> UploadAvatar(string id, [FromForm] IFormFile file)
     {
@@ -182,6 +181,4 @@ public class AdvtController : ControllerBase
 
         return File(System.IO.File.ReadAllBytes(filepath), mimeType);
     }
-
-    
 }

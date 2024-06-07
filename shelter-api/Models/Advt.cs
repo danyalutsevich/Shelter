@@ -5,7 +5,7 @@ public class Advt
     public string id { get; set; }
     public string partitionKey { get; set; } = "advt";
 
-    public string AuthorId { get; set; }
+    public string AuthorId { get; set; } = null!;
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Price { get; set; } = string.Empty;

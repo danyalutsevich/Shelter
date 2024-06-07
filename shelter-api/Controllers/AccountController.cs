@@ -174,7 +174,6 @@ public class AccountController : ControllerBase
         return File(System.IO.File.ReadAllBytes(filepath), mimeType);
     }
 
-
     [HttpGet]
     [Route("GetUserById/{id}")]
     public async Task<IActionResult> GetUserById(String id)
@@ -238,7 +237,6 @@ public class AccountController : ControllerBase
         }
         return BadRequest();
     }
-
 
     private string GenerateJwtToken(string username)
     {
