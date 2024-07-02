@@ -79,7 +79,7 @@ export function AdCard({ ad }: AdCardProps) {
 
   return (
     <Card className="w-9/12 p-4 ">
-      <Link href={`/ad/${ad.id}`}>
+      <Link href={`/ad/advt/${ad.id}`}>
         <article className="flex flex-row justify-between">
           <div className="space-y-2 max-w-5xl">
             <div className="flex-row flex space-x-2">
