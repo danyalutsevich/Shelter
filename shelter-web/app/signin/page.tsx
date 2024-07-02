@@ -35,8 +35,8 @@ export default function SignIn() {
     if (res.ok) {
       const data = await res.json();
       console.log(data);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      window.localStorage.setItem("token", data.token);
+      window.localStorage.setItem("user", JSON.stringify(data.user));
       router.push("/");
     }
   };

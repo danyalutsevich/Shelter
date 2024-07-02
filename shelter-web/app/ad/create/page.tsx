@@ -6,30 +6,44 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { env } from "@/utils/enum/env.enum";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { User } from "@/utils/types/User";
 
 export default function CreateAd() {
   const router = useRouter();
 
+  
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [animalType, setAnimalType] = useState("");
   const [city, setCity] = useState("");
-
+  
   const [image, setImage] = useState<File | null>();
+  
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
+    setUser(JSON.parse(localStorage?.getItem("user") || "{}"));
+  }, []);
 
   const createAd = () => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
     fetch(env.url + "/Advt/AddAdvt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
-        authorId: JSON.parse(localStorage.getItem("user") || "{}").id,
+        authorId: user?.id,
         title,
         description,
         price,

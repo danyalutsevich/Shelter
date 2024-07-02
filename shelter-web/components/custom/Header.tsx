@@ -6,8 +6,19 @@ import { Search } from "./Search";
 import Image from "next/image";
 import { LanguageSettings } from "./LanguageSettings";
 import { ProfileButton } from "./ProfileButton";
+import { useEffect, useState } from "react";
+import { User } from "@/utils/types/User";
 
 export function Header() {
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
+    setUser(JSON.parse(localStorage?.getItem("user") || "{}"));
+  }, []);
+
   return (
     <div className="bg-primary p-3 space-y-2 flex flex-col items-center">
       <div className="flex justify-between w-full">
@@ -23,7 +34,7 @@ export function Header() {
             <Link href="/ad/create" className="text-white">
               Створити оголошення
             </Link>
-            {localStorage.getItem("token") ? (
+            {user ? (
               <ProfileButton />
             ) : (
               <>

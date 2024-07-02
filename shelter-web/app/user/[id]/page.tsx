@@ -15,7 +15,6 @@ export default function User() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }).then((res) => {
       if (res.ok) {

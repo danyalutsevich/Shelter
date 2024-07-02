@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/custom/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,29 +10,33 @@ import Image from "next/image";
 import { User } from "@/utils/types/User";
 
 export default function Profile() {
-  const [user, setUser] = useState<User>(
-    JSON.parse(localStorage.getItem("user") || "{}")
-  );
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
+    setUser(JSON.parse(localStorage?.getItem("user") || "{}"));
+  }, []);
 
   const onSave = async () => {
-    const res = await fetch(env.url + "/Account/EditUser/" + user.id, {
+    const res = await fetch(env.url + "/Account/EditUser/" + user?.id, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(user),
     });
 
     if (res.ok) {
       const data = await res.json();
-      localStorage.setItem("user", JSON.stringify(data));
+      window.localStorage.setItem("user", JSON.stringify(data));
     }
   };
 
   const logOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
     window.location.href = "/signin";
   };
 
@@ -41,9 +45,9 @@ export default function Profile() {
       <Header />
       <div className="flex items-center justify-center p-3">
         <Card className="p-4 space-y-6 w-full max-w-[40%] justify-between flex flex-col">
-          {user.avatar ? (
+          {user?.avatar ? (
             <Image
-              src={`${env.url}/Account/GetImageByFileName?filename=${user.avatar}`}
+              src={`${env.url}/Account/GetImageByFileName?filename=${user?.avatar}`}
               alt="profile"
               width={60}
               height={60}
@@ -53,9 +57,9 @@ export default function Profile() {
 
           <Input
             placeholder="Name"
-            value={user.name}
+            value={user?.name}
             onChange={(e) =>
-              setUser((user: User) => {
+              setUser((user: any) => {
                 user.name = e.target.value;
                 return user;
               })
@@ -63,9 +67,9 @@ export default function Profile() {
           />
           <Input
             placeholder="Email"
-            value={user.email}
+            value={user?.email}
             onChange={(e) =>
-              setUser((user: User) => {
+              setUser((user: any) => {
                 user.email = e.target.value;
                 return user;
               })
@@ -73,9 +77,9 @@ export default function Profile() {
           />
           <Input
             placeholder="Phone"
-            value={user.phone}
+            value={user?.phone}
             onChange={(e) =>
-              setUser((user: User) => {
+              setUser((user: any) => {
                 user.phone = e.target.value;
                 return user;
               })
@@ -83,9 +87,9 @@ export default function Profile() {
           />
           <Input
             placeholder="City"
-            value={user.city}
+            value={user?.city}
             onChange={(e) =>
-              setUser((user: User) => {
+              setUser((user: any) => {
                 user.city = e.target.value;
                 return user;
               })
@@ -93,9 +97,9 @@ export default function Profile() {
           />
           <Input
             placeholder="Address"
-            value={user.address}
+            value={user?.address}
             onChange={(e) =>
-              setUser((user: User) => {
+              setUser((user: any) => {
                 user.address = e.target.value;
                 return user;
               })

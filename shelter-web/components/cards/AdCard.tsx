@@ -20,12 +20,20 @@ export function AdCard({ ad }: AdCardProps) {
   const [author, setAuthor] = useState<any>();
   const [saved, setSaved] = useState<any[]>([]);
 
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
+    setUser(JSON.parse(localStorage?.getItem("user") || "{}"));
+  }, []);
+
   useEffect(() => {
     fetch(env.url + "/Account/GetUserById/" + ad?.authorId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }).then((res) => {
       if (res.ok) {
@@ -38,18 +46,12 @@ export function AdCard({ ad }: AdCardProps) {
   }, [ad?.authorId]);
 
   const getSaved = () => {
-    fetch(
-      env.url +
-        "/Advt/GetSavedAdvts/" +
-        JSON.parse(localStorage.getItem("user") || "{}")?.id,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(env.url + "/Advt/GetSavedAdvts/" + user?.id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
           setSaved(data);
@@ -63,11 +65,10 @@ export function AdCard({ ad }: AdCardProps) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
         advtId: ad?.id,
-        userId: JSON.parse(localStorage.getItem("user") || "{}").id,
+        userId: user?.id,
       }),
     });
   };

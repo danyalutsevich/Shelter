@@ -12,11 +12,14 @@ export default function Ad() {
   const [advt, setAdvt] = useState<Advt>();
 
   useEffect(() => {
+    if (typeof window == "undefined") {
+      return;
+    }
+
     fetch(env.url + "/Advt/GetAdvtById/" + params.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }).then((res) => {
       if (res.ok) {
